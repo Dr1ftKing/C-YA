@@ -1,0 +1,6 @@
+{
+  "dev": {
+    "driver": "pg",
+    "connectionString": "postgresql://postgres:your_password@localhost:5432/hangout_coordinator"
+  }
+}
