@@ -24,3 +24,8 @@ export const cancelProposal = async (id) => {
     const response = await api.delete(`/proposals/${id}`);
     return response.data;
 };
+
+export const getAvailability = async (id) => {
+    const response = await api.get(`/proposals/${id}/availability`);
+    return response.data;
+};

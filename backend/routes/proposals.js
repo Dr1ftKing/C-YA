@@ -211,4 +211,53 @@ router.delete('/:id', requireAuth, async (req, res) => {
     }
 });
 
+// Get availability data for a proposal (calendar view)
+router.get('/:id/availability', async (req, res) =>  {
+    try {
+        const { id } = req.params;
+
+        // get proposal
+        const proposalResult = await pool.query(
+            `SELECT * FROM proposals WHERE id = $1`,
+            [id]
+        );
+
+        if (proposalResult.rows.length === 0) {
+            return res.status(404).json({ error: 'Proposal not found' });
+        }
+
+        const proposal = proposalResult.rows[0];
+
+        // Get all slots with their availability
+        const slotsResult =  await pool.query(
+            `SELECT s.id, s.name, s.email,
+            json_agg(
+              json_build_object(
+                'date', ae.date,
+                'busy_times', ae.busy_times
+                ) ORDER BY ae.date
+              ) as availability
+               FROM slots s
+               LEFT JOIN availability_entries ae ON ae.slot_id = s.id
+               WHERE s.proposal_id = $1
+               GROUP BY s.id, s.name, s.email, s.claimed_at
+               ORDER BY s.claimed_at`,
+               [id]
+        );
+
+        res.json({
+            proposal: {
+                id: proposal.id,
+                num_slots: proposal.num_slots,
+                date_range_start: proposal.date_range_start,
+                date_range_end: proposal.date_range_end
+            },
+            slots: slotsResult.rows
+        });
+    } catch (error) {
+        console.error('Get availability error:', error);
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
 module.exports = router;

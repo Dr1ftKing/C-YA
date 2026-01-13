@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getProposal, updateProposal, cancelProposal } from "../services/proposals";
 import { format } from 'date-fns';
+import AvailabilityCalendar from '../components/AvailabilityCalendar';
 
 function ProposalDetail({ user }) {
     const { id } = useParams();
@@ -258,8 +259,8 @@ function ProposalDetail({ user }) {
             )}
 
             <div className="bg-white rounded-lg shadow p-6">
-            <h2 className="text-xl font-bold mb-4">Availability Calendar</h2>
-            <p className="text-gray-600">Calendar view coming soon...</p>
+                <h2 className="text-xl font-bold mb-4">Availability Calendar</h2>
+                <AvailabilityCalendar proposalId={id} />
             </div>
         </div>
         </div>
