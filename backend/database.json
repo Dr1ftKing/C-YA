@@ -1,6 +1,10 @@
 {
   "dev": {
     "driver": "pg",
-    "connectionString": "postgresql://postgres:your_password@localhost:5432/hangout_coordinator"
+    "env": "DATABASE_URL"
+  },
+  "docker": {
+    "driver": "pg",
+    "connectionString": "postgresql://postgres:postgres@postgres:5432/hangout_coordinator"
   }
 }

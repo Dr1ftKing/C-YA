@@ -30,7 +30,7 @@ function Login({ setUser }) {
       <div className="max-w-md w-full space-y-8">
         <div>
           <h2 className="text-center text-3xl font-bold text-gray-900">
-            Hangout Coordinator
+            CYA
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
             Sign in to your account
