@@ -29,7 +29,7 @@ router.post('/', requireAuth, async (req, res) => {
 
         // Set default date range if not provided (4 weeks from today)
         const start = dateRangeStart || new Date().toISOString().split('T')[0];
-        const end = dateRangeEnd || addDays(new Date(), 28).toISOString.split('T')[0];
+        const end = dateRangeEnd || addDays(new Date(), 28).toISOString().split('T')[0];
 
         const result = await pool.query(
             `INSERT INTO proposals (title, description, date_range_start, date_range_end, creator_id, num_slots, status)
