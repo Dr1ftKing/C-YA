@@ -9,7 +9,10 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: 'http://localhost:5173', // Vite's default port
+  origin: [
+    'http://localhost:5173',
+    'cya-production.up.railway.app'
+  ], // Vite's default port
   credentials: true
 }));
 app.use(express.json());
