@@ -9,12 +9,26 @@ export default defineConfig({
     port: 5173,
     watch: {
       usePolling: true
+    },
+    proxy: {
+      '/api': {
+        target: 'https://cya-backend-production.up.railway.app',
+        changeOrigin: true,
+        secure: true
+      }
     }
   },
   preview: {
     host: '0.0.0.0',
     port: 5173,
     strictPort: true,
-    allowedHosts: ['.railway.app', 'localhost']
+    allowedHosts: ['.railway.app', 'localhost'],
+    proxy: {
+      '/api': {
+        target: 'https://cya-backend-production.up.railway.app',
+        changeOrigin: true,
+        secure: true
+      }
+    }
   }
 })
