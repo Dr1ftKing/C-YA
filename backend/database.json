@@ -1,4 +1,13 @@
 {
+  "name": "c-ya-backend",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "migrate": "node-pg-migrate",
+    "migrate:up": "node-pg-migrate up",
+    "migrate:down": "node-pg-migrate down"
+  },
   "dev": {
     "driver": "pg",
     "env": "DATABASE_URL"
