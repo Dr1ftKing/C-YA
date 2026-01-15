@@ -2,6 +2,7 @@ import express from 'express';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import { existsSync } from 'fs';
+import { createProxyMiddleware } from 'http-proxy-middleware';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -18,6 +19,14 @@ console.log('Dist folder exists:', existsSync(distPath));
 app.get('/health', (req, res) => {
   res.status(200).send('OK');
 });
+
+// Proxy API requests to backend
+app.use('/api', createProxyMiddleware({
+  target: 'https://cya-backend-production.up.railway.app',
+  changeOrigin: true,
+  secure: true,
+  logLevel: 'debug'
+}));
 
 // Serve static files from dist
 app.use(express.static(distPath));
