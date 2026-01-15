@@ -25,7 +25,22 @@ app.use('/api', createProxyMiddleware({
   target: 'https://cya-backend-production.up.railway.app',
   changeOrigin: true,
   secure: true,
-  logLevel: 'debug'
+  logLevel: 'debug',
+  cookieDomainRewrite: '',
+  onProxyReq: (proxyReq, req, res) => {
+    // Forward cookies from client
+    if (req.headers.cookie) {
+      proxyReq.setHeader('cookie', req.headers.cookie);
+    }
+  },
+  onProxyRes: (proxyRes, req, res) => {
+    // Forward set-cookie from backend to client
+    if (proxyRes.headers['set-cookie']) {
+      proxyRes.headers['set-cookie'] = proxyRes.headers['set-cookie'].map(cookie => {
+        return cookie.replace(/Domain=[^;]+;?\s*/gi, '');
+      });
+    }
+  }
 }));
 
 // Serve static files from dist
