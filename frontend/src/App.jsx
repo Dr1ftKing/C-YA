@@ -15,11 +15,19 @@ function App() {
   // Check if user is logged in on mount
   useEffect(() => {
     const checkAuth = async () => {
+      // Only check if token exists
+      const token = localStorage.getItem('token');
+      if (!token) {
+        setLoading(false);
+        return;
+      }
+
       try {
         const data = await getCurrentUser();
         setUser(data.user);
-      } catch(err) {
-        // Not logged in
+      } catch (err) {
+        // Token invalid or expired, remove it
+        localStorage.removeItem('token');
         setUser(null);
       } finally {
         setLoading(false);
@@ -36,6 +44,7 @@ function App() {
       </div>
     );
   }
+
   return (
     <Routes>
       <Route 
@@ -69,6 +78,5 @@ function App() {
     </Routes>
   );
 }
-
 
 export default App;

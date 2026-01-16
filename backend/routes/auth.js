@@ -1,9 +1,15 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const validator = require('validator');
+const jwt = require('jsonwebtoken');
 const pool = require('../config/database');
 
 const router = express.Router();
+
+// Generate JWT token
+const generateToken = (userId) => {
+    return jwt.sign({ userId }, process.env.JWT_SECRET, { expiresIn: '30d' });
+};
 
 // Signup route
 router.post('/signup', async (req, res) => {
@@ -44,15 +50,10 @@ router.post('/signup', async (req, res) => {
 
         const user = result.rows[0];
 
-        // Set session
-        req.session.userId = user.id;
+        // Generate token
+        const token = generateToken(user.id);
 
-        console.log('Signup - Session set:', {
-            sessionID: req.sessionID,
-            userId: req.session.userId
-        });
-
-        res.status(201).json({ user });
+        res.status(201).json({ user, token });
     } catch (error) {
         console.error('Signup error:', error);
         res.status(500).json({ error: 'Server error' });
@@ -88,50 +89,40 @@ router.post('/login', async (req, res) => {
             return res.status(401).json({ error: 'Invalid credentials' });
         }
 
-        // Set session
-        req.session.userId = user.id;
-
-        console.log('Login - Session set:', {
-            sessionID: req.sessionID,
-            userId: req.session.userId
-        });
+        // Generate token
+        const token = generateToken(user.id);
 
         // Don't send password back
         const { password: _, ...userWithoutPassword } = user;
 
-        res.json({ user: userWithoutPassword });
+        res.json({ user: userWithoutPassword, token });
     } catch (error) {
         console.error('Login error:', error);
         res.status(500).json({ error: 'Server error' });
     }
 });
 
-// Logout route
+// Logout route (just for consistency, JWT logout is client-side)
 router.post('/logout', (req, res) => {
-    req.session.destroy((err) => {
-        if (err) {
-            return res.status(500).json({ error: 'Could not log out' });
-        }
-        res.clearCookie('connect.sid');
-        res.json({ message: 'Logged out successfully' });
-    });
+    res.json({ message: 'Logged out successfully' });
 });
 
 // Get current user
 router.get('/me', async (req, res) => {
     try {
-        console.log('/me - Session check:', {
-            sessionID: req.sessionID,
-            userId: req.session.userId
-        });
+        // Get token from header
+        const token = req.headers.authorization?.split(' ')[1];
 
-        if (!req.session.userId) {
+        if (!token) {
             return res.status(401).json({ error: 'Not authenticated' });
         }
 
+        // Verify token
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
         const result = await pool.query(
             'SELECT id, email, name, birthday FROM users WHERE id = $1',
-            [req.session.userId]
+            [decoded.userId]
         );
 
         if (result.rows.length === 0) {
@@ -140,6 +131,9 @@ router.get('/me', async (req, res) => {
 
         res.json({ user: result.rows[0] });
     } catch (error) {
+        if (error.name === 'JsonWebTokenError' || error.name === 'TokenExpiredError') {
+            return res.status(401).json({ error: 'Invalid or expired token' });
+        }
         console.error('Get user error:', error);
         res.status(500).json({ error: 'Server error' });
     }
