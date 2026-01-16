@@ -7,6 +7,12 @@ const router = express.Router();
 
 // Middleware to check authentication
 const requireAuth = (req, res, next) => {
+    console.log('Session check:', {
+        sessionID: req.sessionID,
+        userId: req.session.userId,
+        session: req.session
+    });
+    
     if (!req.session.userId) {
         return res.status(401).json({ error: 'Not authenticated' });
     }

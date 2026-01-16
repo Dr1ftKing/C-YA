@@ -1,13 +1,13 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const validator = require('validator');
-const pool = require('../config/database')
+const pool = require('../config/database');
 
 const router = express.Router();
 
 // Signup route
 router.post('/signup', async (req, res) => {
-    try{
+    try {
         const { email, name, password, birthday } = req.body;
 
         // Validation
@@ -15,22 +15,22 @@ router.post('/signup', async (req, res) => {
             return res.status(400).json({ error: 'All fields are required' });
         }
 
-        if(!validator.isEmail(email)) {
-            return res.status(400).json({error: 'Invalid email address'});
+        if (!validator.isEmail(email)) {
+            return res.status(400).json({ error: 'Invalid email address' });
         }
 
         if (password.length < 8) {
-            return res.status(400).json({ error: 'Password must be at least 8 characters'});
+            return res.status(400).json({ error: 'Password must be at least 8 characters' });
         }
 
         // Check if user already exists
         const existingUser = await pool.query(
-            'SELECT * FROM users WHERE email =$1',
+            'SELECT * FROM users WHERE email = $1',
             [email]
         );
 
         if (existingUser.rows.length > 0) {
-            return res.status(400).json({ error: 'Email already registered'});
+            return res.status(400).json({ error: 'Email already registered' });
         }
 
         // Hash Password
@@ -47,8 +47,13 @@ router.post('/signup', async (req, res) => {
         // Set session
         req.session.userId = user.id;
 
+        console.log('Signup - Session set:', {
+            sessionID: req.sessionID,
+            userId: req.session.userId
+        });
+
         res.status(201).json({ user });
-    }catch (error) {
+    } catch (error) {
         console.error('Signup error:', error);
         res.status(500).json({ error: 'Server error' });
     }
@@ -56,50 +61,55 @@ router.post('/signup', async (req, res) => {
 
 // Login route
 router.post('/login', async (req, res) => {
-  try {
-    const { email, password } = req.body;
+    try {
+        const { email, password } = req.body;
 
-    // Validation
-    if (!email || !password) {
-      return res.status(400).json({ error: 'Email and password are required' });
+        // Validation
+        if (!email || !password) {
+            return res.status(400).json({ error: 'Email and password are required' });
+        }
+
+        // Find user
+        const result = await pool.query(
+            'SELECT * FROM users WHERE email = $1',
+            [email]
+        );
+
+        if (result.rows.length === 0) {
+            return res.status(401).json({ error: 'Invalid credentials' });
+        }
+
+        const user = result.rows[0];
+
+        // Check password
+        const validPassword = await bcrypt.compare(password, user.password);
+
+        if (!validPassword) {
+            return res.status(401).json({ error: 'Invalid credentials' });
+        }
+
+        // Set session
+        req.session.userId = user.id;
+
+        console.log('Login - Session set:', {
+            sessionID: req.sessionID,
+            userId: req.session.userId
+        });
+
+        // Don't send password back
+        const { password: _, ...userWithoutPassword } = user;
+
+        res.json({ user: userWithoutPassword });
+    } catch (error) {
+        console.error('Login error:', error);
+        res.status(500).json({ error: 'Server error' });
     }
-
-    // Find user
-    const result = await pool.query(
-      'SELECT * FROM users WHERE email = $1',
-      [email]
-    );
-
-    if (result.rows.length === 0) {
-      return res.status(401).json({ error: 'Invalid credentials' });
-    }
-
-    const user = result.rows[0];
-
-    // Check password
-    const validPassword = await bcrypt.compare(password, user.password);
-
-    if (!validPassword) {
-      return res.status(401).json({ error: 'Invalid credentials' });
-    }
-
-    // Set session
-    req.session.userId = user.id;
-
-    // Don't send password back
-    const { password: _, ...userWithoutPassword } = user;
-
-    res.json({ user: userWithoutPassword });
-  } catch (error) {
-    console.error('Login error:', error);
-    res.status(500).json({ error: 'Server error' });
-  }
 });
 
 // Logout route
 router.post('/logout', (req, res) => {
     req.session.destroy((err) => {
-        if(err) {
+        if (err) {
             return res.status(500).json({ error: 'Could not log out' });
         }
         res.clearCookie('connect.sid');
@@ -109,7 +119,12 @@ router.post('/logout', (req, res) => {
 
 // Get current user
 router.get('/me', async (req, res) => {
-    try{
+    try {
+        console.log('/me - Session check:', {
+            sessionID: req.sessionID,
+            userId: req.session.userId
+        });
+
         if (!req.session.userId) {
             return res.status(401).json({ error: 'Not authenticated' });
         }
@@ -123,10 +138,10 @@ router.get('/me', async (req, res) => {
             return res.status(404).json({ error: 'User not found' });
         }
 
-        res.json({ user:result.rows[0] });
+        res.json({ user: result.rows[0] });
     } catch (error) {
         console.error('Get user error:', error);
-        res.status(500).json({ error:'Server error' });
+        res.status(500).json({ error: 'Server error' });
     }
 });
 
