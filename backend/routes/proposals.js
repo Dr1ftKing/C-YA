@@ -1,22 +1,25 @@
 const express = require('express');
+const jwt = require('jsonwebtoken');
 const pool = require('../config/database');
 const { addDays } = require('date-fns');
 
 const router = express.Router();
 
-
 // Middleware to check authentication
 const requireAuth = (req, res, next) => {
-    console.log('Session check:', {
-        sessionID: req.sessionID,
-        userId: req.session.userId,
-        session: req.session
-    });
-    
-    if (!req.session.userId) {
-        return res.status(401).json({ error: 'Not authenticated' });
+    try {
+        const token = req.headers.authorization?.split(' ')[1];
+        
+        if (!token) {
+            return res.status(401).json({ error: 'Not authenticated' });
+        }
+
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        req.userId = decoded.userId;
+        next();
+    } catch (error) {
+        return res.status(401).json({ error: 'Invalid or expired token' });
     }
-    next();
 };
 
 // Create a new proposal
@@ -41,7 +44,7 @@ router.post('/', requireAuth, async (req, res) => {
             `INSERT INTO proposals (title, description, date_range_start, date_range_end, creator_id, num_slots, status)
             VALUES ($1, $2, $3, $4, $5, $6, 'active')
             RETURNING *`,
-            [title, description || null, start, end, req.session.userId, numSlots]
+            [title, description || null, start, end, req.userId, numSlots]
         );
 
         res.status(201).json({ proposal: result.rows[0] });
@@ -53,7 +56,7 @@ router.post('/', requireAuth, async (req, res) => {
 
 // Get all proposals for current user (created + responded to)
 router.get('/', requireAuth, async (req, res) => {
-    try{
+    try {
         // Get proposals created by user
         const createdProposals = await pool.query(
             `SELECT p.*, u.name as creator_name
@@ -61,7 +64,7 @@ router.get('/', requireAuth, async (req, res) => {
             JOIN users u ON p.creator_id = u.id
             WHERE p.creator_id = $1
             ORDER BY p.created_at DESC`,
-            [req.session.userId]
+            [req.userId]
         );
 
         // Get proposals user has responded to
@@ -73,14 +76,14 @@ router.get('/', requireAuth, async (req, res) => {
             WHERE s.email = (SELECT email FROM users WHERE id = $1)
             AND p.creator_id != $1
             ORDER BY p.created_at DESC`,
-            [req.session.userId]
+            [req.userId]
         );
 
         res.json({
-            created:createdProposals.rows,
+            created: createdProposals.rows,
             responded: respondedProposals.rows
         });
-    } catch(error) {
+    } catch (error) {
         console.error('Get proposals error:', error);
         res.status(500).json({ error: 'Server error' });
     }
@@ -91,7 +94,7 @@ router.get('/:id', async (req, res) => {
     try {
         const { id } = req.params;
         
-        const result =  await pool.query(
+        const result = await pool.query(
             `SELECT p.*, u.name as creator_name, u.email as creator_email
             FROM proposals p
             JOIN users u ON p.creator_id = u.id
@@ -121,7 +124,7 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-// Update proposal(creator only)
+// Update proposal (creator only)
 router.patch('/:id', requireAuth, async (req, res) => {
     try {
         const { id } = req.params;
@@ -137,8 +140,8 @@ router.patch('/:id', requireAuth, async (req, res) => {
             return res.status(404).json({ error: 'Proposal not found' });
         }
 
-        if (proposal.rows[0].creator_id !== req.session.userId) {
-            return res.status(403).json({ error: 'Not authorized'  });
+        if (proposal.rows[0].creator_id !== req.userId) {
+            return res.status(403).json({ error: 'Not authorized' });
         }
 
         // Build update query dynamically
@@ -150,23 +153,22 @@ router.patch('/:id', requireAuth, async (req, res) => {
             updates.push(`title = $${paramCount++}`);
             values.push(title);
         }
-        if(description !== undefined) {
+        if (description !== undefined) {
             updates.push(`description = $${paramCount++}`);
             values.push(description);
         }
-        if(dateRangeStart !== undefined) {
+        if (dateRangeStart !== undefined) {
             updates.push(`date_range_start = $${paramCount++}`);
             values.push(dateRangeStart);
         }
-        if(dateRangeEnd !== undefined) {
+        if (dateRangeEnd !== undefined) {
             updates.push(`date_range_end = $${paramCount++}`);
             values.push(dateRangeEnd);
         }
-        if(numSlots !== undefined) {
+        if (numSlots !== undefined) {
             updates.push(`num_slots = $${paramCount++}`);
             values.push(numSlots);
         }
-
 
         if (updates.length === 0) {
             return res.status(400).json({ error: 'No updates provided' });
@@ -191,17 +193,17 @@ router.delete('/:id', requireAuth, async (req, res) => {
     try {
         const { id } = req.params;
 
-        // Check if user us creator
+        // Check if user is creator
         const proposal = await pool.query(
             `SELECT * FROM proposals WHERE id = $1`,
             [id]
         );
 
         if (proposal.rows.length === 0) {
-            return res.status(404).json({ error: 'Proposal not found'});
+            return res.status(404).json({ error: 'Proposal not found' });
         }
 
-        if (proposal.rows[0].creator_id !== req.session.userId) {
+        if (proposal.rows[0].creator_id !== req.userId) {
             return res.status(403).json({ error: 'Not authorized' });
         }
 
@@ -211,14 +213,14 @@ router.delete('/:id', requireAuth, async (req, res) => {
         );
 
         res.json({ message: 'Proposal cancelled' });
-    }catch (error) {
+    } catch (error) {
         console.error('Cancel proposal error:', error);
         res.status(500).json({ error: 'Server error' });
     }
 });
 
 // Get availability data for a proposal (calendar view)
-router.get('/:id/availability', async (req, res) =>  {
+router.get('/:id/availability', async (req, res) => {
     try {
         const { id } = req.params;
 
@@ -235,7 +237,7 @@ router.get('/:id/availability', async (req, res) =>  {
         const proposal = proposalResult.rows[0];
 
         // Get all slots with their availability
-        const slotsResult =  await pool.query(
+        const slotsResult = await pool.query(
             `SELECT s.id, s.name, s.email,
             json_agg(
               json_build_object(
@@ -248,7 +250,7 @@ router.get('/:id/availability', async (req, res) =>  {
                WHERE s.proposal_id = $1
                GROUP BY s.id, s.name, s.email, s.claimed_at
                ORDER BY s.claimed_at`,
-               [id]
+            [id]
         );
 
         res.json({
