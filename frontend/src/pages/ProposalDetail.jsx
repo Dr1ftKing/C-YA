@@ -90,19 +90,19 @@ function ProposalDetail({ user }) {
 
     return (
 
-        <div className="min-h-screen bg-gray-50 py-8">
+        <div className="min-h-screen bg-white py-8">
         <div className="max-w-4xl mx-auto px-4">
             <div className="mb-6">
             <button
                 onClick={() => navigate('/dashboard')}
-                className="text-blue-600 hover:text-blue-700"
+                className="text-soft-periwinkle hover:text-slate-blue"
             >
                 ← Back to Dashboard
             </button>
             </div>
 
             {editing ? (
-            <div className="bg-white rounded-lg shadow p-6 mb-6">
+            <div className="bg-white rounded-lg border-2 border-periwinkle p-6 mb-6">
                 <h2 className="text-2xl font-bold mb-6">Edit Proposal</h2>
                 
                 <div className="space-y-4">
@@ -114,7 +114,7 @@ function ProposalDetail({ user }) {
                     type="text"
                     value={editData.title}
                     onChange={(e) => setEditData({ ...editData, title: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-3 py-2 border border-slate-blue rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                     />
                 </div>
 
@@ -126,7 +126,7 @@ function ProposalDetail({ user }) {
                     value={editData.description}
                     onChange={(e) => setEditData({ ...editData, description: e.target.value })}
                     rows="3"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-3 py-2 border border-slate-blue rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                     />
                 </div>
 
@@ -139,7 +139,7 @@ function ProposalDetail({ user }) {
                         type="date"
                         value={editData.dateRangeStart}
                         onChange={(e) => setEditData({ ...editData, dateRangeStart: e.target.value })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                        className="w-full px-3 py-2 border border-slate-blue rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                     />
                     </div>
 
@@ -151,7 +151,7 @@ function ProposalDetail({ user }) {
                         type="date"
                         value={editData.dateRangeEnd}
                         onChange={(e) => setEditData({ ...editData, dateRangeEnd: e.target.value })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                        className="w-full px-3 py-2 border border-slate-blue rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                     />
                     </div>
                 </div>
@@ -165,7 +165,7 @@ function ProposalDetail({ user }) {
                     min="1"
                     value={editData.numSlots}
                     onChange={(e) => setEditData({ ...editData, numSlots: parseInt(e.target.value) })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-3 py-2 border border-slate-blue rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                     />
                 </div>
                 </div>
@@ -173,20 +173,20 @@ function ProposalDetail({ user }) {
                 <div className="flex gap-4 mt-6">
                 <button
                     onClick={() => setEditing(false)}
-                    className="flex-1 px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+                    className="flex-1 px-4 py-2 border-2 border-periwinkle rounded-md text-soft-periwinkle hover:bg-lavender-veil"
                 >
                     Cancel
                 </button>
                 <button
                     onClick={handleEdit}
-                    className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                    className="flex-1 px-4 py-2 bg-soft-periwinkle text-white rounded-md hover:bg-slate-blue"
                 >
                     Save Changes
                 </button>
                 </div>
             </div>
             ) : (
-            <div className="bg-white rounded-lg shadow p-6 mb-6">
+            <div className="bg-white rounded-lg border-2 border-lavender-veil p-6 mb-6">
                 <div className="flex justify-between items-start mb-6">
                 <div>
                     <h1 className="text-3xl font-bold">{proposal.title}</h1>
@@ -232,17 +232,17 @@ function ProposalDetail({ user }) {
                         />
                         <button
                         onClick={handleCopyLink}
-                        className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                        className="px-4 py-2 bg-soft-periwinkle text-white rounded-md hover:bg-slate-blue"
                         >
                         Copy Link
                         </button>
                     </div>
                     </div>
 
-                    <div className="flex gap-4 pt-4 border-t">
+                    <div className="flex gap-4 pt-4 border-t border-slate-blue">
                     <button
                         onClick={() => setEditing(true)}
-                        className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+                        className="px-4 py-2 border-2 border-periwinkle rounded-md text-soft-periwinkle hover:bg-gray-50"
                     >
                         Edit Details
                     </button>
@@ -258,8 +258,8 @@ function ProposalDetail({ user }) {
             </div>
             )}
 
-            <div className="bg-white rounded-lg shadow p-6">
-                <h2 className="text-xl font-bold mb-4">Availability Calendar</h2>
+            <div className="bg-white rounded-lg border-2 border-lavender-veil p-6">
+                <h2 className=" text-xl font-bold mb-4">Availability Calendar</h2>
                 <AvailabilityCalendar proposalId={id} />
             </div>
         </div>
