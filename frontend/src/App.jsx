@@ -6,6 +6,7 @@ import Dashboard from './pages/Dashboard';
 import CreateProposal from './pages/CreateProposal';
 import ProposalDetail from './pages/ProposalDetail';
 import InviteResponse from './pages/InviteResponse';
+import About from './pages/About';
 import { getCurrentUser } from './services/auth';
 
 function App() {
@@ -74,6 +75,10 @@ function App() {
       <Route 
         path="/invite/:id" 
         element={<InviteResponse />} 
+      />
+      <Route
+         path="/about"
+         element={<About />}
       />
     </Routes>
   );

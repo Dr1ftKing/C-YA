@@ -150,7 +150,7 @@ function InviteResponse() {
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-3xl mx-auto px-4">
-        <div className="bg-white rounded-lg shadow p-6 mb-6">
+        <div className="bg-white rounded-lg border  border-soft-periwinkle shadow p-6 mb-6">
           <h1 className="text-3xl font-bold mb-2">{proposal.title}</h1>
           <p className="text-gray-600 mb-4">
             By {proposal.creator_name} • {format(new Date(proposal.date_range_start), 'MMM d')} - {format(new Date(proposal.date_range_end), 'MMM d, yyyy')}
@@ -160,8 +160,8 @@ function InviteResponse() {
             <p className="text-gray-700 mb-4">{proposal.description}</p>
           )}
 
-          <div className="bg-blue-50 border border-blue-200 rounded p-4">
-            <p className="text-sm font-medium text-blue-900">
+          <div className="bg-periwinkle border border-soft-periwinkle rounded p-4">
+            <p className="text-sm font-medium text-slate-blue">
               {slotsAvailable > 0 
                 ? `${slotsAvailable} of ${proposal.num_slots} slots available`
                 : 'All slots are filled'}
@@ -176,7 +176,7 @@ function InviteResponse() {
             </p>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow p-6">
+          <form onSubmit={handleSubmit} className="bg-white rounded-lg border border-soft-periwinkle p-6">
             <h2 className="text-xl font-bold mb-4">Submit Your Availability</h2>
             
             {error && (
@@ -195,7 +195,7 @@ function InviteResponse() {
                   required
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 border border-soft-periwinkle rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
 
@@ -208,7 +208,7 @@ function InviteResponse() {
                   required
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 border border-soft-periwinkle rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 />
                 <p className="mt-1 text-sm text-gray-500">
                   We'll use this to identify you if you need to update your availability later
@@ -228,7 +228,7 @@ function InviteResponse() {
                   const isSelected = selectedDays[dateStr];
                   
                   return (
-                    <div key={dateStr} className="border border-gray-200 rounded-lg p-4">
+                    <div key={dateStr} className="border border-soft-periwinkle rounded-lg p-4">
                       <div className="flex items-center mb-2">
                         <input
                           type="checkbox"
@@ -269,7 +269,7 @@ function InviteResponse() {
             <button
               type="submit"
               disabled={submitting}
-              className="w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50"
+              className="w-full px-4 py-2 bg-soft-periwinkle text-white rounded-md hover:bg-slate-blue disabled:opacity-50"
             >
               {submitting ? 'Submitting...' : 'Submit Availability'}
             </button>

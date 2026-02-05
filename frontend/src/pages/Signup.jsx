@@ -49,10 +49,10 @@ function Signup({ setUser }) {
         }
     };
       return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-lavender-mist py-12 px-4">
       <div className="max-w-md w-full space-y-8">
         <div>
-          <h2 className="text-center text-3xl font-bold text-gray-900">
+          <h2 className="text-center text-3xl font-bold text-soft-periwinkle">
             Create your account
           </h2>
         </div>
@@ -66,7 +66,7 @@ function Signup({ setUser }) {
           
           <div className="space-y-4">
             <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="name" className="block text-sm font-medium text-soft-periwinkle">
                 Name
               </label>
               <input
@@ -81,7 +81,7 @@ function Signup({ setUser }) {
             </div>
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="email" className="block text-sm font-medium text-soft-periwinkle">
                 Email
               </label>
               <input
@@ -96,7 +96,7 @@ function Signup({ setUser }) {
             </div>
             
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="password" className="block text-sm font-medium text-soft-periwinkle">
                 Password
               </label>
               <input
@@ -108,11 +108,11 @@ function Signup({ setUser }) {
                 onChange={handleChange}
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               />
-              <p className="mt-1 text-sm text-gray-500">Must be at least 8 characters</p>
+              <p className="mt-1 text-sm text-periwinkle">Must be at least 8 characters</p>
             </div>
 
             <div>
-              <label htmlFor="birthday" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="birthday" className="block text-sm font-medium text-soft-periwinkle">
                 Birthday
               </label>
               <input
@@ -122,7 +122,7 @@ function Signup({ setUser }) {
                 required
                 value={formData.birthday}
                 onChange={handleChange}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                className="text-soft-periwinkle mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-soft-periwinkle focus:border-soft-periwinkle"
               />
             </div>
           </div>
@@ -130,7 +130,7 @@ function Signup({ setUser }) {
           <button
             type="submit"
             disabled={loading}
-            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-slate-blue hover:bg-lavender-veil focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
           >
             {loading ? 'Creating account...' : 'Sign up'}
           </button>

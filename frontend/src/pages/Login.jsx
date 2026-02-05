@@ -26,13 +26,13 @@ function Login({ setUser }) {
     };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4">
+    <div className="min-h-screen flex items-center justify-center py-12 px-4">
       <div className="max-w-md w-full space-y-8">
         <div>
-          <h2 className="text-center text-3xl font-bold text-gray-900">
+          <h2 className="text-center text-3xl font-bold ">
             CYA
           </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
+          <p className="mt-2 text-center text-sm text-soft-periwinkle">
             Sign in to your account
           </p>
         </div>
@@ -46,7 +46,7 @@ function Login({ setUser }) {
           
           <div className="space-y-4">
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="email" className="block text-sm font-medium ">
                 Email
               </label>
               <input
@@ -55,12 +55,12 @@ function Login({ setUser }) {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                className="mt-1 block w-full px-3 py-2 border border-soft-periwinkle rounded-md shadow-sm focus:outline-none focus:ring-slate-blue focus:border-slate-blue"
               />
             </div>
             
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="password" className="block text-sm font-medium ">
                 Password
               </label>
               <input
@@ -69,7 +69,7 @@ function Login({ setUser }) {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                className="mt-1 block w-full px-3 py-2 border border-soft-periwinkle rounded-md shadow-sm focus:outline-none focus:ring-slate-blue focus:border-slate-blue"
               />
             </div>
           </div>
@@ -77,18 +77,24 @@ function Login({ setUser }) {
           <button
             type="submit"
             disabled={loading}
-            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-slate-blue hover:bg-lavender-veil focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
           >
             {loading ? 'Signing in...' : 'Sign in'}
           </button>
           
-          <p className="text-center text-sm text-gray-600">
+          <p className="text-center text-sm text-soft-periwinkle">
             Don't have an account?{' '}
             <Link to="/signup" className="font-medium text-blue-600 hover:text-blue-500">
               Sign up
             </Link>
           </p>
         </form>
+        <p className="text-center text-sm text-gray-600 mt-4">
+          <Link to="/about" className="text-blue-600 hover:text-blue-500">
+            Learn more about C-ya
+          </Link>
+        </p>
+        
       </div>
     </div>
   );

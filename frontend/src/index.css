@@ -1,1 +1,9 @@
 @import "tailwindcss";
+
+@theme {
+  --color-lavender-veil: #e5d9f2;
+  --color-lavender-mist: #f5efff;
+  --color-periwinkle: #cdc1ff;
+  --color-soft-periwinkle: #a594f9;
+  --color-slate-blue: #7371fc;
+}

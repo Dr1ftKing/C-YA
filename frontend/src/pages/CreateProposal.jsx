@@ -69,7 +69,7 @@ function CreateProposal() {
         <div className="max-w-2xl mx-auto px-4">
           <h2 className="text-2xl font-bold mb-6">Preview Your Proposal</h2>
           
-          <div className="bg-white rounded-lg shadow p-6 mb-6">
+          <div className="border border-soft-periwinkle bg-white rounded-lg shadow p-6 mb-6">
             <div className="mb-4">
               <h3 className="text-sm font-medium text-gray-500">Title</h3>
               <p className="text-lg font-semibold">{formData.title}</p>
@@ -104,14 +104,14 @@ function CreateProposal() {
           <div className="flex gap-4">
             <button
               onClick={() => setShowPreview(false)}
-              className="flex-1 px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+              className="flex-1 px-4 py-2 border border-soft-periwinkle rounded-md text-gray-700 hover:bg-gray-50"
             >
               Back to Edit
             </button>
             <button
               onClick={handleSubmit}
               disabled={loading}
-              className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50"
+              className="flex-1 px-4 py-2 bg-soft-periwinkle text-white rounded-md hover:bg-slate-blue disabled:opacity-50"
             >
               {loading ? 'Creating...' : 'Create Proposal'}
             </button>
@@ -127,7 +127,7 @@ function CreateProposal() {
         <div className="mb-6">
           <button
             onClick={() => navigate('/dashboard')}
-            className="text-blue-600 hover:text-blue-700"
+            className="text-soft-periwinkle hover:text-slate-blue"
           >
             ← Back to Dashboard
           </button>
@@ -135,7 +135,7 @@ function CreateProposal() {
 
         <h2 className="text-2xl font-bold mb-6">Create New Hangout Proposal</h2>
         
-        <form onSubmit={handlePreview} className="bg-white rounded-lg shadow p-6">
+        <form onSubmit={handlePreview} className="bg-white rounded-lg border border-soft-periwinkle p-6">
           {error && (
             <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-4">
               {error}
@@ -155,7 +155,7 @@ function CreateProposal() {
                 value={formData.title}
                 onChange={handleChange}
                 placeholder="e.g., Weekend Hiking Trip"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-3 py-2 border border-soft-periwinkle rounded-md focus:outline-none focus:ring-blue-500 focus:border-slate-blue"
               />
             </div>
 
@@ -170,7 +170,7 @@ function CreateProposal() {
                 value={formData.description}
                 onChange={handleChange}
                 placeholder="Add any details about the hangout..."
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-3 py-2 border border-soft-periwinkle rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
 
@@ -186,7 +186,7 @@ function CreateProposal() {
                   required
                   value={formData.dateRangeStart}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 border border-soft-periwinkle rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
 
@@ -201,7 +201,7 @@ function CreateProposal() {
                   required
                   value={formData.dateRangeEnd}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 border border-soft-periwinkle rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
             </div>
@@ -218,7 +218,7 @@ function CreateProposal() {
                 required
                 value={formData.numSlots}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-3 py-2 border border-soft-periwinkle rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
           </div>
@@ -226,7 +226,7 @@ function CreateProposal() {
           <div className="mt-6">
             <button
               type="submit"
-              className="w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 bg-soft-periwinkle text-white rounded-md hover:bg-slate-blue focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             >
               Preview Proposal
             </button>
