@@ -11,8 +11,10 @@ const app = express();
 app.use(cors({
   origin: [
     'http://localhost:5173',
-    'https://cya-production.up.railway.app'
-  ], // Vite's default port
+    'https://cya-production.up.railway.app',
+    'https://www.c-ya.net', 
+    'https://c-ya.net'
+  ], 
   credentials: true
 }));
 app.use(express.json());
