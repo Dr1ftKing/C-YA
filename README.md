@@ -2,7 +2,7 @@
 
 A full-stack web application for coordinating group hangouts through shareable availability links.
 
-**Live at:** [cya-production.up.railway.app/](https://cya-production.up.railway.app/)
+**Live at:** [https://www.c-ya.net/](https://www.c-ya.net/)
 
 ## Overview
 
