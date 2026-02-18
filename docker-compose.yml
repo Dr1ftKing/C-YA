@@ -35,9 +35,10 @@ services:
       - ./frontend:/app
       - /app/node_modules
     environment:
-      - VITE_API_URL=http://localhost:3001
+      - VITE_API_URL=http://localhost:3001/api      
     depends_on:
       - backend
+    command: npm run dev   
 
 volumes:
   postgres_data:
