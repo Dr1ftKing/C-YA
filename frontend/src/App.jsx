@@ -8,6 +8,7 @@ import ProposalDetail from './pages/ProposalDetail';
 import InviteResponse from './pages/InviteResponse';
 import About from './pages/About';
 import { getCurrentUser } from './services/auth';
+import Navbar from './components/Navbar';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -47,40 +48,43 @@ function App() {
   }
 
   return (
-    <Routes>
-      <Route 
-        path="/" 
-        element={user ? <Navigate to="/dashboard" /> : <Navigate to="/login" />} 
-      />
-      <Route 
-        path="/login" 
-        element={user ? <Navigate to="/dashboard" /> : <Login setUser={setUser} />} 
-      />
-      <Route 
-        path="/signup" 
-        element={user ? <Navigate to="/dashboard" /> : <Signup setUser={setUser} />} 
-      />
-      <Route 
-        path="/dashboard" 
-        element={user ? <Dashboard user={user} setUser={setUser} /> : <Navigate to="/login" />} 
-      />
-      <Route 
-        path="/create-proposal" 
-        element={user ? <CreateProposal /> : <Navigate to="/login" />} 
-      />
-      <Route 
-        path="/proposal/:id" 
-        element={user ? <ProposalDetail user={user} /> : <Navigate to="/login" />} 
-      />
-      <Route 
-        path="/invite/:id" 
-        element={<InviteResponse />} 
-      />
-      <Route
-         path="/about"
-         element={<About />}
-      />
-    </Routes>
+    <>
+      <Navbar user={user} setUser={setUser} />
+      <Routes>
+        <Route 
+          path="/" 
+          element={user ? <Navigate to="/dashboard" /> : <Navigate to="/login" />} 
+          />
+        <Route 
+          path="/login" 
+          element={user ? <Navigate to="/dashboard" /> : <Login setUser={setUser} />} 
+          />
+        <Route 
+          path="/signup" 
+          element={user ? <Navigate to="/dashboard" /> : <Signup setUser={setUser} />} 
+          />
+        <Route 
+          path="/dashboard" 
+          element={user ? <Dashboard user={user} setUser={setUser} /> : <Navigate to="/login" />} 
+          />
+        <Route 
+          path="/create-proposal" 
+          element={user ? <CreateProposal /> : <Navigate to="/login" />} 
+          />
+        <Route 
+          path="/proposal/:id" 
+          element={user ? <ProposalDetail user={user} /> : <Navigate to="/login" />} 
+          />
+        <Route 
+          path="/invite/:id" 
+          element={<InviteResponse />} 
+          />
+        <Route
+          path="/about"
+          element={<About />}
+          />
+      </Routes>
+    </>
   );
 }
 
