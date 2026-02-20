@@ -49,10 +49,10 @@ function Signup({ setUser }) {
         }
     };
       return (
-    <div className="min-h-screen flex items-center justify-center bg-lavender-mist py-12 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-white py-12 px-4">
       <div className="max-w-md w-full space-y-8">
         <div>
-          <h2 className="text-center text-3xl font-bold text-soft-periwinkle">
+          <h2 className="text-center text-3xl font-bold text-black">
             Create your account
           </h2>
         </div>
