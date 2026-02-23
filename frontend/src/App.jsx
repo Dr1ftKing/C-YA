@@ -9,6 +9,7 @@ import InviteResponse from './pages/InviteResponse';
 import About from './pages/About';
 import { getCurrentUser } from './services/auth';
 import Navbar from './components/Navbar';
+import Contact from './pages/Contact';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -82,6 +83,10 @@ function App() {
         <Route
           path="/about"
           element={<About />}
+          />
+        <Route
+          path="/contact"
+          element={<Contact />}
           />
       </Routes>
     </>
