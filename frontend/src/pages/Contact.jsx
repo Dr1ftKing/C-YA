@@ -5,14 +5,15 @@ function Contact() {
         name: '',
         email: '',
         subject: '',
-        nessage: ''
+        message: ''
     });
     const [submitted, setSubmitted] = useState(false);
 
     const handleChange = (e) => {
-        e.preventDefault();
-        console.log('Contact form Submitted:', formData);
-        getSubmitted(true);
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value
+        });
     };
 
     const handleSubmit = (e) => {
