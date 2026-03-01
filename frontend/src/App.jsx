@@ -10,6 +10,7 @@ import About from './pages/About';
 import { getCurrentUser } from './services/auth';
 import Navbar from './components/Navbar';
 import Contact from './pages/Contact';
+import Home from './pages/Home';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -54,7 +55,7 @@ function App() {
       <Routes>
         <Route 
           path="/" 
-          element={user ? <Navigate to="/dashboard" /> : <Navigate to="/login" />} 
+          element={user ? <Navigate to="/dashboard" /> : <Home />} 
           />
         <Route 
           path="/login" 
@@ -88,6 +89,10 @@ function App() {
           path="/contact"
           element={<Contact />}
           />
+        <Route
+          path="/home"
+          element={<Home />}
+        />
       </Routes>
     </>
   );
